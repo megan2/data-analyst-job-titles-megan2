@@ -39,18 +39,21 @@ SELECT COUNT(DISTINCT title) FROM data_analyst_jobs WHERE location='CA';
 /*MEGAN COME FIX THIS Find the name of each company and its average star rating for all companies that have 
 more than 5000 reviews across all locations. 
 How many companies are there with more that 5000 reviews across all locations?*/
---SELECT company, AVG(star_rating) FROM data_analyst_jobs WHERE SUM(review_count) > 5000;
+SELECT company, (star_rating/review_count) AS avg_rating, review_count FROM data_analyst_jobs 
+	WHERE review_count > 5000 
+	GROUP BY company, avg_rating;
 
 /*Add the code to order the query in #9 from highest to lowest average star rating. 
 Which company with more than 5000 reviews across all locations in the dataset has the highest star rating? 
 What is that rating?*/
 
 --Find all the job titles that contain the word ‘Analyst’. How many different job titles are there?
-SELECT COUNT(*) FROM data_analyst_jobs WHERE title LIKE '%Analyst%'; 
---1636 job titles
+SELECT COUNT(DISTINCT title) FROM data_analyst_jobs WHERE title ILIKE '%Analyst%'; 
+--774 distinct job titles
 
 /*How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? 
 What word do these positions have in common?*/
-SELECT * FROM data_analyst_jobs WHERE title NOT LIKE '%Analyst%';
---it's returning all caps ANALYST and analyst/
+SELECT DISTINCT title FROM data_analyst_jobs WHERE title NOT ILIKE '%Analyst%' AND title NOT ILIKE '%Analytics%';
+--4 distinct job titles in this data set don't have both the words ‘Analyst’ or the word ‘Analytics’
+--These job titles all include the word Tableau
 
