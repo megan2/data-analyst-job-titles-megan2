@@ -67,4 +67,22 @@ SELECT DISTINCT title FROM data_analyst_jobs WHERE title NOT ILIKE '%Analyst%' A
 --4 distinct job titles in this data set don't have both the words ‘Analyst’ or the word ‘Analytics’
 --These job titles all include the word Tableau
 
-/*BONUS 
+/*BONUS You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks.
+- Disregard any postings where the domain is NULL.*/
+SELECT COUNT (DISTINCT title) 
+FROM data_analyst_jobs
+WHERE skill ILIKE '%SQL%'
+AND days_since_posting >= 21
+AND domain IS NOT NULL;
+-- 221 jobs are returned by this query
+
+-- Order your results so that the domain with the greatest number of hard to fill jobs is at the top.
+SELECT domain, COUNT(title) as open_job_postings
+FROM data_analyst_jobs
+WHERE skill ILIKE '%SQL%'
+AND days_since_posting >= 21
+AND domain IS NOT NULL
+GROUP BY domain
+ORDER BY open_job_postings desc;
+-- Which three industries are in the top 4 on this list? How many jobs have been listed for more than 3 weeks for each of the top 4?
+         --Internet and Software, 63 jobs; Banks and Financial Services, 63 jobs; Consulting and Business Services, 62 jobs; Health Care, 54 jobs.
